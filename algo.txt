@@ -1,0 +1,22 @@
+Calculator project:
+	- Upon user clicking a number, add the clicked number to screen-text
+Algorithm:
+	- Upon clicking a digit button:
+		- Display digit on screen
+		- Add digit to currentNumStr
+	
+	- Upon clicking an operator button:
+		- If firstNum is empty:
+			- Define firstNum as parseInt(currentNumStr);
+			- Define operator as operator;
+			- Add operator.textContent to screen-text;
+			- Define currentNumStr as an empty string
+			
+	- Upon clicking 'equals' button:
+		- Define secondNum as parseInt(currentNUmStr);
+		- Define res as operate(firstNum, secondNum, operator)
+		- Define screen-text as toString(res)
+	
+	- Upon clicking 'Clear' button:
+		- Define screen-text and currentNumStr as empty strings
+		- Define firstNum, secondNum, and operator as null
