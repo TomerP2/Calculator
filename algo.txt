@@ -20,3 +20,10 @@ Algorithm:
 	- Upon clicking 'Clear' button:
 		- Define screen-text and currentNumStr as empty strings
 		- Define firstNum, secondNum, and operator as null
+		
+	- Upon clicking an operator button while secondNum is not null:
+		- Call calculateRes
+		- Define firstNum as res
+		- Define operator as getOperator(this.textContent)
+		- Add operator to screen
+		

@@ -8,8 +8,7 @@ let firstNum = null;
 let secondNum = null;
 let currentNumStr = '';
 let operator = null;
-
-
+let res = null;
 
 //--- Basic arigmethic functions ---
 function add(a, b) {
@@ -32,23 +31,6 @@ function operate(operator, a, b) {
     return operator(a, b);
 };
 
-//---Upon clicking a digit button---
-//Display digit on screen
-//Add digit to currentNumStr
-function addNumberToScreen(numberElement) {
-    let selectedDigit = numberElement.textContent.replace(/\s+/g, '');
-    screenElement.textContent += selectedDigit;
-};
-
-numbersElements.forEach(numberElement => {
-    numberElement.addEventListener('click', function() {
-        addNumberToScreen(this);
-        currentNumStr += this.textContent.replace(/\s+/g, '');
-    })
-});
-
-// - Upon clicking an operator button:
-
 function getOperator(string) {
     string = string.replace(/\s+/g, '');
     switch (string) {
@@ -63,9 +45,34 @@ function getOperator(string) {
     }
 };
 
+//---Upon clicking a digit button---
+numbersElements.forEach(numberElement => {
+    numberElement.addEventListener('click', function() {
+        if (res && !operator) {
+            clearAll();
+        };
+        let selectedDigit = this.textContent.replace(/\s+/g, '');
+        screenElement.textContent += selectedDigit;
+        currentNumStr += selectedDigit;
+    })
+});
+
+// - Upon clicking an operator button:
 operatorElements.forEach(operatorElement => {
     operatorElement.addEventListener('click', function() {
-        firstNum = parseInt(currentNumStr);
+        //Check if there are numbers
+        if (currentNumStr === '') {
+            return;
+        }
+        //Check if there is already an operator or a result present
+        if (operator) {
+            calculateRes();
+            firstNum = res;
+        } else if (res) {
+            firstNum = res;
+        } else {
+            firstNum = parseInt(currentNumStr);
+        }
         operator = getOperator(this.textContent);
         screenElement.textContent += this.textContent;
         currentNumStr = '';
@@ -74,18 +81,31 @@ operatorElements.forEach(operatorElement => {
 
 // - Upon clicking 'equals' button:
 
-equalsElement.addEventListener('click', function() {
+function calculateRes() {
     secondNum = parseInt(currentNumStr);
-    let res = operate(operator, firstNum, secondNum);
+    res = operate(operator, firstNum, secondNum);
+    res = Math.round(res * (10 ** 10)) / (10 ** 10);
+    firstNum = null;
+    secondNum = null;
+    operator = null;
     screenElement.textContent = res.toString();
+}
+
+equalsElement.addEventListener('click', function() {
+    calculateRes();
 });
 
 // - Upon clicking 'Clear' button:
 
-clearElement.addEventListener('click', function() {
+function clearAll() {
     screenElement.textContent = '';
     currentNumStr = '';
     firstNum = null;
     secondNum = null;
     operator = null;
+    res = null;
+}
+
+clearElement.addEventListener('click', function() {
+    clearAll()
 });
